@@ -81,6 +81,22 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
 .mlbl{position:absolute;left:0;top:0;pointer-events:none;background:#1f2a2e;color:#fff;border-radius:6px;padding:3px 8px;font:700 12px var(--body);font-variant-numeric:tabular-nums;white-space:nowrap}
 #mini{position:absolute;top:max(16px, env(safe-area-inset-top,0px));right:max(16px, env(safe-area-inset-right,0px));width:200px;height:178px;
   border-radius:12px;border:1px solid var(--line);background:var(--panel);box-shadow:0 6px 18px rgba(0,0,0,.14);cursor:crosshair}
+.phide{float:right;background:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted);font:600 11px var(--body);cursor:pointer}
+.pshow{position:absolute;top:max(16px, env(safe-area-inset-top,0px));left:max(16px, env(safe-area-inset-left,0px));padding:9px 14px;border-radius:999px;border:1px solid var(--line);
+  background:var(--panel);color:var(--ink);font:600 12.5px var(--body);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.14)}
+.zbar{position:absolute;right:max(16px, env(safe-area-inset-right,0px));bottom:calc(max(14px, env(safe-area-inset-bottom,0px)) + 44px);display:flex;flex-direction:column;gap:6px}
+.zbar button{width:46px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:600 17px/1 var(--body);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.zbar button[data-z="top"]{font-size:12px}
+.gal{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.gal h4{margin:0;font:600 10.5px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.thumbs button{padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;cursor:zoom-in;background:var(--chip);aspect-ratio:4/3}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.lb{position:fixed;inset:0;background:rgba(10,12,14,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:50;padding:24px}
+.lb img{max-width:min(1400px,100%);max-height:calc(100% - 70px);border-radius:10px;object-fit:contain}
+.lb p{margin:0;color:#f2efe9;font:600 14px var(--body)}
+.lb button{position:absolute;background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:999px;width:44px;height:44px;font:600 20px var(--body);cursor:pointer}
+.lbx{top:16px;right:16px}.lbp{left:16px;top:50%}.lbn{right:16px;top:50%}
 #loading{position:absolute;inset:0;display:grid;place-items:center;font:400 20px var(--display);color:var(--muted)}
 @media (max-width:720px){
   .panel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:46%;border-radius:16px 16px 0 0;
@@ -88,6 +104,8 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
   h1{font-size:23px}.sub{display:none}.hint{display:none}
   .nav{bottom:calc(46% + 12px);right:12px}
   #mini{width:140px;height:125px;top:10px;right:10px}
+  .zbar{bottom:calc(46% + 12px);right:12px}
+  .pshow{top:auto;bottom:max(14px, env(safe-area-inset-bottom,0px))}
   .views{grid-template-columns:repeat(4,1fr)}
 }
 </style>
@@ -98,6 +116,7 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
   <div id="labels"></div>
   <aside class="panel" aria-label="Design controls">
     <div>
+      <button type="button" class="phide" id="pHide" aria-label="Hide panel">Hide ›</button>
       <p class="eyebrow">3 BHK · Warm modern Indian</p>
       <h1>Your 3 BHK, Furnished</h1>
       <p class="sub">Each room has its own colour story on a shared base of warm white walls, marble, teak and brass. Tap a room to step inside.</p>
@@ -126,6 +145,16 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
     </div>
     <div class="note" id="note"></div>
   </aside>
+  <button type="button" id="pShow" class="pshow" hidden>☰ Panel</button>
+  <div class="zbar" id="zbar" aria-label="Zoom controls">
+    <button type="button" data-z="in" title="Zoom in">＋</button><button type="button" data-z="out" title="Zoom out">－</button>
+    <button type="button" data-z="fit" title="Whole home">⌂</button><button type="button" data-z="top" title="Top view">Top</button>
+  </div>
+  <div id="lb" class="lb" hidden role="dialog" aria-label="Design idea">
+    <img id="lbImg" alt=""><p id="lbCap"></p>
+    <button type="button" class="lbx" id="lbClose" aria-label="Close">✕</button>
+    <button type="button" class="lbp" id="lbPrev" aria-label="Previous">‹</button><button type="button" class="lbn" id="lbNext" aria-label="Next">›</button>
+  </div>
   <canvas id="mini" width="400" height="356" aria-label="Mini-map: click to stand there"></canvas>
   <div class="hint" id="hint">Drag to rotate · scroll or pinch to zoom · right-drag to pan · double-click a spot to stand there</div>
   <div class="nav" id="nav" hidden aria-label="Walk controls">
@@ -904,13 +933,14 @@ function setMode(ins){inside=ins;
   Object.assign(controls,ins
     ?{enableZoom:false,enablePan:false,rotateSpeed:-0.35,minDistance:0.4,maxDistance:0.6,minPolarAngle:0.35,maxPolarAngle:PI-0.35}
     :{enableZoom:true,enablePan:true,rotateSpeed:0.9,minDistance:3,maxDistance:110,minPolarAngle:0,maxPolarAngle:PI/2-0.04});
-  navEl.hidden=!ins;
+  navEl.hidden=!ins;document.getElementById('zbar').hidden=ins;
   hintEl.textContent=ins?'Drag to look · ↑ ↓ walk · ← → move sideways · Q E turn · click furniture for details · click the mini-map to jump'
                         :'Drag to rotate · scroll/pinch to zoom · right-drag to pan · double-click or use the mini-map to stand inside';
   if(!ins){camera.fov=baseFov;camera.updateProjectionMatrix();}}
-function flyTo(pos,tgt,ins){Object.assign(controls,{minDistance:0,maxDistance:500,minPolarAngle:0,maxPolarAngle:PI});setWalls(ins);
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  fly={p0:camera.position.clone(),t0:controls.target.clone(),p1:pos,t1:tgt,s:performance.now(),d:reduce?1:1200,mode:ins};}
+function flyTo(pos,tgt,ins){Object.assign(controls,{minDistance:0,maxDistance:500,minPolarAngle:0,maxPolarAngle:PI});if(!ins)setWalls(false);
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;const dist=camera.position.distanceTo(pos);zoomGoal=null;
+  fly={p0:camera.position.clone(),t0:controls.target.clone(),p1:pos,t1:tgt,s:performance.now(),f0:camera.fov,
+       d:reduce?1:Math.min(2300,Math.max(1100,850+dist*24)),arc:reduce?0:((ins!==inside||dist>18)?Math.min(9,dist*0.16):0),mode:ins,wallsSet:!ins||H>=H_FULL};}
 function standAt(pos,look){const d=look.clone().sub(pos);d.y=Math.max(-0.4,Math.min(0.2,d.y/Math.max(1,d.length())));d.normalize();flyTo(pos,pos.clone().add(d.multiplyScalar(0.5)),true);}
 function go(id){current=id;const r=ROOMS.find(x=>x.id===id);
   if(r.view)flyTo(new THREE.Vector3(...r.view.pos),new THREE.Vector3(...r.view.tgt),false);
@@ -924,7 +954,7 @@ function walk(dist,strafe){camera.getWorldDirection(fwd);fwd.y=0;if(fwd.lengthSq
   const delta=np.sub(camera.position);camera.position.add(delta);controls.target.add(delta);}
 function turn(deg){const off=controls.target.clone().sub(camera.position).applyAxisAngle(UP,deg*PI/180);controls.target.copy(camera.position).add(off);}
 function zoomFov(f){camera.fov=Math.max(24,Math.min(80,camera.fov*f));camera.updateProjectionMatrix();}
-canvas.addEventListener('wheel',e=>{if(!inside||fly)return;e.preventDefault();walk(Math.max(-1.2,Math.min(1.2,-e.deltaY*0.012)));},{passive:false});
+
 const keys=new Set();
 addEventListener('keydown',e=>{if(!inside||e.target.closest&&e.target.closest('input,textarea'))return;const k=e.key.toLowerCase();
   if(['w','s','a','d','q','e','arrowup','arrowdown','arrowleft','arrowright','+','=','-','_'].includes(k)){keys.add(k);e.preventDefault();}});
@@ -934,15 +964,17 @@ navEl.querySelectorAll('button').forEach(b=>{const a=b.dataset.a;
   if(a==='exit'){b.addEventListener('click',()=>go('overview'));return;}
   b.addEventListener('pointerdown',e=>{held=a;b.setPointerCapture(e.pointerId);});
   for(const ev of['pointerup','pointercancel','lostpointercapture'])b.addEventListener(ev,()=>{if(held===a)held=null;});});
-function stepInside(){if(!inside||fly)return;const has=k=>keys.has(k);
-  if(has('w')||has('arrowup')||held==='fwd')walk(0.14);
-  if(has('s')||has('arrowdown')||held==='back')walk(-0.14);
-  if(has('a')||has('arrowleft')||held==='left')walk(0,-0.13);
-  if(has('d')||has('arrowright')||held==='right')walk(0,0.13);
-  if(has('q')||held==='turnL')turn(1.6);
-  if(has('e')||held==='turnR')turn(-1.6);
-  if(has('+')||has('=')||held==='zin')zoomFov(0.985);
-  if(has('-')||has('_')||held==='zout')zoomFov(1.015);}
+const vel={f:0,s:0,t:0,z:0},imp={f:0};
+function stepInside(){if(!inside||fly){vel.f=vel.s=vel.t=vel.z=0;imp.f=0;return;}const has=k=>keys.has(k);
+  const tf=(has('w')||has('arrowup')||held==='fwd'?0.17:0)-(has('s')||has('arrowdown')||held==='back'?0.17:0);
+  const ts=(has('d')||has('arrowright')||held==='right'?0.15:0)-(has('a')||has('arrowleft')||held==='left'?0.15:0);
+  const tt=(has('q')||held==='turnL'?1.8:0)-(has('e')||held==='turnR'?1.8:0);
+  const tz=(has('-')||has('_')||held==='zout'?1:0)-(has('+')||has('=')||held==='zin'?1:0);
+  vel.f+=(tf-vel.f)*0.14;vel.s+=(ts-vel.s)*0.14;vel.t+=(tt-vel.t)*0.14;vel.z+=(tz-vel.z)*0.14;
+  const im=imp.f*0.1;imp.f-=im;
+  if(Math.abs(vel.f+im)>1e-4||Math.abs(vel.s)>1e-4)walk(vel.f+im,vel.s);
+  if(Math.abs(vel.t)>1e-3)turn(vel.t);
+  if(Math.abs(vel.z)>1e-3)zoomFov(1+vel.z*0.016);}
 /* double-click a floor spot to stand there */
 canvas.addEventListener('dblclick',e=>{const r=canvas.getBoundingClientRect();
   const m=new THREE.Vector2(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
@@ -951,7 +983,7 @@ canvas.addEventListener('dblclick',e=>{const r=canvas.getBoundingClientRect();
   if(p.x<wx(0.4)||p.x>wx(43.6)||p.z<wz(0.4)||p.z>wz(38.6))return;
   camera.getWorldDirection(fwd);fwd.y=0;if(fwd.lengthSq()<1e-4)fwd.set(0,0,-1);fwd.normalize();
   const pos=new THREE.Vector3(p.x,5.2,p.z);standAt(pos,pos.clone().addScaledVector(fwd,5).setY(4.6));});
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const ease=t=>-(Math.cos(PI*t)-1)/2;let zoomGoal=null;
 
 /* ---------- toggles ---------- */
 const tWalls=document.getElementById('tWalls'),tLight=document.getElementById('tLight'),tLabels=document.getElementById('tLabels');
@@ -1058,8 +1090,53 @@ const app=document.getElementById('app');
 function resize(){const w=app.clientWidth,h=app.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;baseFov=w<720?64:52;if(!inside)camera.fov=baseFov;camera.updateProjectionMatrix();}
 new ResizeObserver(resize).observe(app);resize();
 const v=new THREE.Vector3();
+/* smooth zoom toward the cursor (overview) and gliding walk (inside) */
+document.getElementById('app').addEventListener('wheel',e=>{if(e.target!==canvas)return;e.preventDefault();e.stopPropagation();stopTour();
+  if(inside){if(!fly)imp.f=Math.max(-5,Math.min(5,imp.f-e.deltaY*0.022));return;}
+  if(fly)return;const f=Math.pow(1.0016,Math.max(-300,Math.min(300,e.deltaY)));
+  const r=canvas.getBoundingClientRect();ray.setFromCamera(new THREE.Vector2(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1),camera);
+  zoomBy(f,ray.ray);},{capture:true,passive:false});
+function zoomBy(f,rayIn){const p=new THREE.Vector3();if(!rayIn||!rayIn.intersectPlane(new THREE.Plane(UP,0),p))p.copy(controls.target);
+  const base=zoomGoal||{c:camera.position.clone(),t:controls.target.clone()};
+  const nc=p.clone().add(base.c.clone().sub(p).multiplyScalar(f)),nt=p.clone().add(base.t.clone().sub(p).multiplyScalar(f));
+  const d=nc.distanceTo(nt);if(d<3.5||d>110)return;zoomGoal={c:nc,t:nt};}
+document.querySelectorAll('#zbar button').forEach(b=>b.addEventListener('click',()=>{stopTour();const z=b.dataset.z;
+  if(z==='fit')return go('overview');if(z==='top')return go('plan');
+  if(inside){imp.f+=z==='in'?3:-3;return;}ray.setFromCamera(new THREE.Vector2(0,0),camera);zoomBy(z==='in'?0.7:1.43,ray.ray);}));
+canvas.addEventListener('pointerdown',()=>{zoomGoal=null;});
+const panelEl=document.querySelector('.panel'),pShow=document.getElementById('pShow');
+document.getElementById('pHide').addEventListener('click',()=>{panelEl.hidden=true;pShow.hidden=false;});
+pShow.addEventListener('click',()=>{panelEl.hidden=false;pShow.hidden=true;});
+/* zoom straight to a selected piece of furniture */
+function focusItem(it){const box=new THREE.Box3();it.objs.forEach(o=>box.expandByObject(o));const c=box.getCenter(new THREE.Vector3()),sz=box.getSize(new THREE.Vector3());
+  camera.getWorldDirection(fwd);fwd.y=0;if(fwd.lengthSq()<1e-4)fwd.set(0,0,-1);fwd.normalize();
+  const dist=Math.max(4.5,Math.max(sz.x,sz.z)*0.9+3.5);const pos=c.clone().addScaledVector(fwd,-dist);
+  pos.x=Math.max(wx(0.8),Math.min(wx(43.2),pos.x));pos.z=Math.max(wz(0.8),Math.min(wz(38.2),pos.z));pos.y=Math.max(4.4,Math.min(6.2,c.y+2.2));
+  stopTour();standAt(pos,c);}
+const baseSelect=select;select=function(it){baseSelect(it);if(!it)return;
+  const row=noteEl.querySelector('#selReset').parentNode;const b=document.createElement('button');b.type='button';b.className='linkbtn';b.textContent='Zoom to it';
+  b.addEventListener('click',()=>focusItem(it));row.prepend(b);};
+/* design ideas gallery for each room (your generated reference images) */
+const GALLERY={"drawing": [{"t": "Fluted Glass", "f": "drawing/drawing-01-fluted-glass.jpg"}, {"t": "Modular Grid", "f": "drawing/drawing-02-modular-grid.jpg"}, {"t": "Refined Offset Plinth", "f": "drawing/drawing-03-refined-offset-plinth.jpg"}, {"t": "Refined Textured Media", "f": "drawing/drawing-04-refined-textured-media.jpg"}, {"t": "Ribbon", "f": "drawing/drawing-05-ribbon.jpg"}, {"t": "Unique TV Concealed Art", "f": "drawing/drawing-06-unique-tv-concealed-art.jpg"}, {"t": "Unique TV Metal Frame", "f": "drawing/drawing-07-unique-tv-metal-frame.jpg"}, {"t": "Unique TV Sculptural Pier", "f": "drawing/drawing-08-unique-tv-sculptural-pier.jpg"}, {"t": "Curved Shelves", "f": "drawing/drawing-09-curved-shelves.jpg"}, {"t": "Library", "f": "drawing/drawing-10-library.jpg"}, {"t": "Sliding", "f": "drawing/drawing-11-sliding.jpg"}], "living": [{"t": "Japandi", "f": "living/living-01-japandi.jpg"}, {"t": "Sage", "f": "living/living-02-sage.jpg"}, {"t": "Sculptural", "f": "living/living-03-sculptural.jpg"}, {"t": "No TV Curved", "f": "living/living-04-no-tv-curved.jpg"}, {"t": "No TV Oak", "f": "living/living-05-no-tv-oak.jpg"}, {"t": "No TV Original Arched Art", "f": "living/living-06-no-tv-original-arched-art.jpg"}, {"t": "No TV Original Floating Ceramics", "f": "living/living-07-no-tv-original-floating-ceramics.jpg"}, {"t": "No TV Original Layered Landscape", "f": "living/living-08-no-tv-original-layered-landscape.jpg"}, {"t": "No TV Reference Inspired Botanical Frames", "f": "living/living-09-no-tv-reference-inspired-botanical-frames.jpg"}, {"t": "No TV Reference Inspired Leaf Relief", "f": "living/living-10-no-tv-reference-inspired-leaf-relief.jpg"}, {"t": "No TV Reference Inspired Tropical", "f": "living/living-11-no-tv-reference-inspired-tropical.jpg"}, {"t": "No TV Sage", "f": "living/living-12-no-tv-sage.jpg"}, {"t": "No TV Theme Blue Brass", "f": "living/living-13-no-tv-theme-blue-brass.jpg"}, {"t": "No TV Theme Indian Modern", "f": "living/living-14-no-tv-theme-indian-modern.jpg"}, {"t": "No TV Theme Japandi Natural", "f": "living/living-15-no-tv-theme-japandi-natural.jpg"}, {"t": "No TV Theme Terracotta", "f": "living/living-16-no-tv-theme-terracotta.jpg"}], "dining": [{"t": "Clay Extendable", "f": "dining/dining-01-clay-extendable.jpg"}, {"t": "Compact Oak", "f": "dining/dining-02-compact-oak.jpg"}, {"t": "Compact Walnut", "f": "dining/dining-03-compact-walnut.jpg"}, {"t": "Concealed Serving", "f": "dining/dining-04-concealed-serving.jpg"}, {"t": "Glass Sculpture", "f": "dining/dining-05-glass-sculpture.jpg"}, {"t": "Indian Craft", "f": "dining/dining-06-indian-craft.jpg"}, {"t": "Oak Sage Collector", "f": "dining/dining-07-oak-sage-collector.jpg"}, {"t": "Round Tambour", "f": "dining/dining-08-round-tambour.jpg"}, {"t": "Sage Oak", "f": "dining/dining-09-sage-oak.jpg"}, {"t": "Sculptural Ivory", "f": "dining/dining-10-sculptural-ivory.jpg"}, {"t": "Smoked Graphite", "f": "dining/dining-11-smoked-graphite.jpg"}, {"t": "Walnut Coffee Gallery", "f": "dining/dining-12-walnut-coffee-gallery.jpg"}, {"t": "Walnut Glass", "f": "dining/dining-13-walnut-glass.jpg"}], "kitchen": [{"t": "Blue Framed", "f": "kitchen/kitchen-01-blue-framed.jpg"}, {"t": "Clay Walnut", "f": "kitchen/kitchen-02-clay-walnut.jpg"}, {"t": "Graphite Oak", "f": "kitchen/kitchen-03-graphite-oak.jpg"}, {"t": "Oak Ivory", "f": "kitchen/kitchen-04-oak-ivory.jpg"}, {"t": "Pastel Blue Cream", "f": "kitchen/kitchen-05-pastel-blue-cream.jpg"}, {"t": "Pastel Blush Oak", "f": "kitchen/kitchen-06-pastel-blush-oak.jpg"}, {"t": "Pastel iPhone Sage", "f": "kitchen/kitchen-07-pastel-iphone-sage.jpg"}, {"t": "Pastel Sage Oak", "f": "kitchen/kitchen-08-pastel-sage-oak.jpg"}, {"t": "Richer Dusty Blue", "f": "kitchen/kitchen-09-richer-dusty-blue.jpg"}, {"t": "Richer Dusty Rose", "f": "kitchen/kitchen-10-richer-dusty-rose.jpg"}, {"t": "Richer Eucalyptus", "f": "kitchen/kitchen-11-richer-eucalyptus.jpg"}, {"t": "Richer Sage Oak", "f": "kitchen/kitchen-12-richer-sage-oak.jpg"}, {"t": "Sage Chimney Racks", "f": "kitchen/kitchen-13-sage-chimney-racks.jpg"}], "puja": [{"t": "Easy Clean Ivory", "f": "puja/puja-01-easy-clean-ivory.jpg"}, {"t": "Easy Clean Sage", "f": "puja/puja-02-easy-clean-sage.jpg"}, {"t": "Floor Arched Niches", "f": "puja/puja-03-floor-arched-niches.jpg"}, {"t": "Floor Broad Tiers", "f": "puja/puja-04-floor-broad-tiers.jpg"}, {"t": "Floor Framed Compartments", "f": "puja/puja-05-floor-framed-compartments.jpg"}, {"t": "Floor Sage Asymmetric", "f": "puja/puja-06-floor-sage-asymmetric.jpg"}, {"t": "Floor Staggered", "f": "puja/puja-07-floor-staggered.jpg"}, {"t": "Floor Tiered Teak", "f": "puja/puja-08-floor-tiered-teak.jpg"}, {"t": "Fluted Stone", "f": "puja/puja-09-fluted-stone.jpg"}, {"t": "Ivory Lotus", "f": "puja/puja-10-ivory-lotus.jpg"}, {"t": "Sage Oak", "f": "puja/puja-11-sage-oak.jpg"}, {"t": "Teak Brass Lines", "f": "puja/puja-12-teak-brass-lines.jpg"}, {"t": "Teak Brass", "f": "puja/puja-13-teak-brass.jpg"}, {"t": "Terracotta Lotus", "f": "puja/puja-14-terracotta-lotus.jpg"}, {"t": "Walnut Craft", "f": "puja/puja-15-walnut-craft.jpg"}, {"t": "Window Lotus", "f": "puja/puja-16-window-lotus.jpg"}, {"t": "Window Sage Oak", "f": "puja/puja-17-window-sage-oak.jpg"}, {"t": "Window Stone Brass", "f": "puja/puja-18-window-stone-brass.jpg"}], "master": [{"t": "Blue Grey", "f": "master/master-01-blue-grey.jpg"}, {"t": "Contemporary Deco", "f": "master/master-02-contemporary-deco.jpg"}, {"t": "Desert Modern", "f": "master/master-03-desert-modern.jpg"}, {"t": "Indian Craft", "f": "master/master-04-indian-craft.jpg"}, {"t": "Japandi", "f": "master/master-05-japandi.jpg"}, {"t": "Walnut Taupe", "f": "master/master-06-walnut-taupe.jpg"}], "bed1": [{"t": "Modern Craft", "f": "bed1/bed1-01-modern-craft.jpg"}, {"t": "Rounded Oak", "f": "bed1/bed1-02-rounded-oak.jpg"}, {"t": "Walnut Blue", "f": "bed1/bed1-03-walnut-blue.jpg"}], "bed2": [{"t": "Bookshelf Curved", "f": "bed2/bed2-01-bookshelf-curved.jpg"}, {"t": "Bookshelf Grid", "f": "bed2/bed2-02-bookshelf-grid.jpg"}, {"t": "Bookshelf Metal Oak", "f": "bed2/bed2-03-bookshelf-metal-oak.jpg"}, {"t": "Combined Graphic", "f": "bed2/bed2-04-combined-graphic.jpg"}, {"t": "Combined Soft", "f": "bed2/bed2-05-combined-soft.jpg"}, {"t": "Earthy Modern", "f": "bed2/bed2-06-earthy-modern.jpg"}, {"t": "Graphic Blue", "f": "bed2/bed2-07-graphic-blue.jpg"}, {"t": "Sage Oak", "f": "bed2/bed2-08-sage-oak.jpg"}], "utility": [{"t": "Oak", "f": "utility/utility-01-oak.jpg"}, {"t": "Sage", "f": "utility/utility-02-sage.jpg"}], "overview": [{"t": "Architectural", "f": "overview/overview-01-architectural.jpg"}, {"t": "Crafted Modern", "f": "overview/overview-02-crafted-modern.jpg"}, {"t": "Soft Minimal", "f": "overview/overview-03-soft-minimal.jpg"}]};
+const IMG_BASE=(location.protocol==='file:'&&!/GitHub(%20| )Site/.test(location.pathname))?'GitHub Site/images/':'images/';
+const lb=document.getElementById('lb'),lbImg=document.getElementById('lbImg'),lbCap=document.getElementById('lbCap');let lbList=[],lbI=0;
+function lbShow(i){lbI=(i+lbList.length)%lbList.length;const g=lbList[lbI];lbImg.src=IMG_BASE+g.f;lbImg.alt=g.t;lbCap.textContent=`${g.t} · ${lbI+1} / ${lbList.length}`;lb.hidden=false;}
+document.getElementById('lbClose').addEventListener('click',()=>lb.hidden=true);
+document.getElementById('lbPrev').addEventListener('click',()=>lbShow(lbI-1));document.getElementById('lbNext').addEventListener('click',()=>lbShow(lbI+1));
+lb.addEventListener('click',e=>{if(e.target===lb)lb.hidden=true;});
+addEventListener('keydown',e=>{if(lb.hidden)return;if(e.key==='Escape')lb.hidden=true;if(e.key==='ArrowLeft')lbShow(lbI-1);if(e.key==='ArrowRight')lbShow(lbI+1);e.stopImmediatePropagation();},true);
+const baseRenderNote=renderNote;renderNote=function(){baseRenderNote();const list=GALLERY[current]||[];if(!list.length)return;
+  const box=document.createElement('div');box.className='gal';
+  box.innerHTML=`<h4>Design ideas · ${list.length}</h4><div class="thumbs">${list.map((g,i)=>`<button type="button" data-i="${i}" title="${g.t}"><img loading="lazy" src="${IMG_BASE}thumbs/${g.f}" alt="${g.t}"></button>`).join('')}</div>`;
+  box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{lbList=list;lbShow(+b.dataset.i);}));noteEl.appendChild(box);};
+renderNote();
+
 function loop(now){
-  if(fly){const k=Math.min(1,(now-fly.s)/fly.d);const e=ease(k);camera.position.lerpVectors(fly.p0,fly.p1,e);controls.target.lerpVectors(fly.t0,fly.t1,e);if(k>=1){const m=fly.mode;fly=null;setMode(m);}}
+  if(fly){const k=Math.min(1,(now-fly.s)/fly.d);const e=ease(k);camera.position.lerpVectors(fly.p0,fly.p1,e);camera.position.y+=Math.sin(PI*e)*fly.arc;
+    controls.target.lerpVectors(fly.t0,fly.t1,e);camera.fov=fly.f0+(baseFov-fly.f0)*e;camera.updateProjectionMatrix();
+    if(!fly.wallsSet&&k>0.5){setWalls(true);fly.wallsSet=true;}
+    if(k>=1){const m=fly.mode;fly=null;setMode(m);}}
+  if(zoomGoal&&!fly){camera.position.lerp(zoomGoal.c,0.18);controls.target.lerp(zoomGoal.t,0.18);if(camera.position.distanceTo(zoomGoal.c)<0.03)zoomGoal=null;}
   stepInside();tourStep(now);
   controls.update();
   ceilG.visible=(H>=H_FULL)&&camera.position.y<9.6;

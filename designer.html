@@ -38,7 +38,11 @@ figcaption b{color:var(--ink)}
 .room{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .room h3{margin:0;font:400 21px/1.15 var(--display)}
 .size{display:inline-block;margin-top:6px;font:700 12.5px var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
-.room ul{margin:10px 0 0;padding-left:18px}
+.room ul{margin:6px 0 0;padding-left:18px}
+.tag{display:inline-block;margin:14px 0 0;padding:3px 9px;border-radius:999px;font:700 10.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase}
+.tag.must{background:var(--accent);color:#fff}.tag.prop{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.legend .tag{margin:0 6px 0 0}.legend{color:var(--muted);font-size:13.5px}
+.req li::marker{color:var(--accent)}
 .room li{margin:3px 0}
 .swatches{display:flex;flex-wrap:wrap;gap:10px}
 .sw{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;font-size:13px}
@@ -97,46 +101,35 @@ footer{margin-top:40px;color:var(--muted);font-size:13px}
   </div>
 
   <h2>Room by room</h2>
+  <p class="legend"><b class="tag must">Our requirements</b> what we need · <b class="tag prop">In the 3D model</b> how it is shown today (open to your ideas)</p>
   <div class="rooms">
-    <article class="room"><h3>Drawing room</h3><span class="size">13′7″ × 12′0″</span><ul>
-      <li>L-shaped sofa in the south-west corner, under the window</li>
-      <li>Carved teak jhula on brass chains near the master-bedroom door, no partition</li>
-      <li>TV wall on the north wall: limewash panel, oak frame, floating shelves, fluted console</li>
-      <li>Shoe rack and mirror <b>outside</b> the main door</li>
-      <li>Large jute rug, ceiling fan, cove-lit false ceiling</li></ul></article>
-    <article class="room"><h3>Living</h3><span class="size">12′0″ × 8′8″</span><ul>
-      <li>One 7′ three-seater sofa only, <b>no TV</b></li>
-      <li>Entrance wall designed end to end (living through dining, up to the C.TOI door): fluted oak, backlit onyx band, brass inlays, floating ledge</li>
-      <li>Bedroom 2 door hidden flush in the panelling</li>
-      <li>Ceiling projector with a recessed roll-down screen</li></ul></article>
-    <article class="room"><h3>Dining</h3><span class="size">16′2″ × 12′0″</span><ul>
-      <li>6-seater oval table, ring chandelier</li>
-      <li>Full-height crockery unit on the dining wall: fluted base, quartz top, backlit glass display, loft</li></ul></article>
-    <article class="room"><h3>Kitchen</h3><span class="size">13′11″ × 8′0″</span><ul>
-      <li>U-shaped modular kitchen, sage base cabinets, quartz top</li>
-      <li>Tall pull-out pantry beside the fridge</li>
-      <li>Appliance garage with a roll-up shutter (mixer, toaster, kettle)</li>
-      <li>Sink at the end near the utility door, dishwasher next to it, then wicker baskets</li>
-      <li>Hob + chimney on the east wall; keep the window to the utility open</li>
-      <li>Wall cabinets and lofts on both sides</li></ul></article>
-    <article class="room"><h3>Puja room</h3><span class="size">4′8″ × 5′6″</span><ul>
-      <li>Mandir on the east wall so the deity faces west, toward the main-entrance side</li>
-      <li>Window wall highlighted with a backlit white CNC jaali around the small high window</li>
-      <li>Jaali doors, toran, bell, kolam rug</li></ul></article>
-    <article class="room"><h3>Master bedroom</h3><span class="size">17′2″ × 12′0″</span><ul>
-      <li>King bed (6′ × 7′) on the south wall with a padded headboard wall</li>
-      <li>Full-length wardrobe with loft along the entire west wall</li>
-      <li>Dressing unit on the TV wall, right beside the wardrobe</li>
-      <li>Work station beside the washroom (M.TOI) door</li>
-      <li>TV console on the north wall</li></ul></article>
-    <article class="room"><h3>Bedroom 1</h3><span class="size">11′5″ × 12′0″</span><ul>
-      <li>Bed 6′ × 5′, one bedside table on the door side only</li>
-      <li>West wall as one continuous unit: wardrobe → window seat (window in the middle) → dressing unit, loft over all</li>
-      <li>No study table; TOI-01 door in the north-east corner</li></ul></article>
-    <article class="room"><h3>Bedroom 2</h3><span class="size">12′0″ × 12′0″</span><ul>
-      <li>Bed 6′ × 4′, no bedside tables, about 2½′ clear from the toilet and balcony doors</li>
-      <li>L-shaped work station under the L-shaped corner window</li>
-      <li>Beside the entry door: cupboard on the left, L-shaped book shelf on the right turning into the corner</li></ul></article>
+    <article class="room"><h3>Whole home</h3><span class="size">approx. 44′ × 39′</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Warm, elegant modern Indian interiors (cream, light oak, beige marble, brass, olive, terracotta)</li><li>Door and window positions exactly as per the builder plan</li><li>False ceilings with warm cove lighting; ceiling fans in living areas and bedrooms</li><li>Plenty of closed storage, with lofts up to the ceiling where possible</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>Beige marble in common areas, wood flooring in bedrooms</li><li>Cove lights, downlights and fans shown in every main room</li></ul></article>
+    <article class="room"><h3>Drawing room</h3><span class="size">13′7″ × 12′0″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Traditional jhula (swing) in the drawing room, open — no partition or separation</li><li>L-shaped sofa</li><li>TV wall</li><li>Shoe rack outside the house, not inside</li><li>Brass urli and lamps, a near wall-to-wall rug, indoor plants</li><li>Look and colours like the warm beige reference: cream, oak, olive</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>Carved teak jhula on brass chains near the master-bedroom door</li><li>L-sofa in the south-west corner facing the jhula and TV</li><li>TV wall: limewash panel in an oak frame, floating shelves, fluted console</li><li>Shoe rack with mirror in the entrance lobby</li></ul></article>
+    <article class="room"><h3>Living</h3><span class="size">12′0″ × 8′8″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Only one sofa</li><li>No TV unit — the entrance wall should be a design feature instead</li><li>The feature should run along the entire wall, up to the washroom (C.TOI) door</li><li>No god idol on this wall</li><li>Projector for movies</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>7′ three-seater facing the wall</li><li>Fluted oak + backlit onyx band + brass inlays + floating ledge; Bedroom 2 door hidden flush</li><li>Ceiling projector behind the sofa with a recessed roll-down screen</li></ul></article>
+    <article class="room"><h3>Dining</h3><span class="size">16′2″ × 12′0″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Crockery unit on the dining wall</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>6-seater oval table and ring chandelier</li><li>Full-height crockery unit: fluted base, quartz top, backlit glass display, loft</li></ul></article>
+    <article class="room"><h3>Kitchen</h3><span class="size">13′11″ × 8′0″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Pantry unit beside the fridge</li><li>Appliance shutter (to hide mixer, toaster, kettle)</li><li>Sink towards the end, near the utility door</li><li>Dishwasher placement</li><li>Wicker baskets</li><li>Lofts on both sides</li><li>Keep the window to the utility</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>U-shape: fridge + tall pull-out pantry, appliance garage with roll-up shutter on the north counter</li><li>Hob + chimney on the east wall</li><li>South run: sink by the utility door → dishwasher → wicker baskets</li><li>Sage base cabinets, white uppers with under-lights, lofts both sides, window kept open between cabinets</li></ul></article>
+    <article class="room"><h3>Puja room</h3><span class="size">4′8″ × 5′6″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>God should face towards the main entrance</li><li>Small window as per plan</li><li>The window wall should also be highlighted</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>Teak mandir on the east wall, deity facing west (the closest straight direction to the entrance)</li><li>Backlit white CNC jaali wall around the small high window, brass frame and diya ledge</li><li>Jaali doors, toran, bell, kolam rug</li></ul></article>
+    <article class="room"><h3>Master bedroom</h3><span class="size">17′2″ × 12′0″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Full-length wardrobe along one entire wall</li><li>Dressing unit on the TV-unit wall, next to the wardrobe</li><li>Work station in the room</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>King bed on the south wall with a padded headboard wall</li><li>Wardrobe + loft along the full west wall</li><li>Dressing unit beside the wardrobe; TV console on the same wall</li><li>Work station beside the washroom (M.TOI) door</li></ul></article>
+    <article class="room"><h3>Bedroom 1</h3><span class="size">11′5″ × 12′0″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Bed size 6′ × 5′</li><li>Wardrobe on the window wall, continuing into a window seat and then a dressing unit — the window comes in the middle</li><li>No study table</li><li>No bedside table on the wardrobe side</li><li>Washroom (TOI-01) door as per plan</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>Bed against a painted terracotta arch, one bedside table on the door side</li><li>One continuous oak unit: wardrobe → cushioned window seat → dressing with lit mirror, loft over all</li></ul></article>
+    <article class="room"><h3>Bedroom 2</h3><span class="size">12′0″ × 12′0″</span>
+      <h4 class="tag must">Our requirements</h4><ul class="req"><li>Bed size 6′ × 4′, no bedside tables</li><li>Work station at the L-shaped corner window</li><li>Cupboard on the left of the door, book shelf on the right</li><li>Book shelf L-shaped, turning into the corner</li><li>Bed towards the toilet/balcony doors, but with enough space to use them</li></ul>
+      <h4 class="tag prop">In the 3D model</h4><ul><li>Bed on the east wall with about 2½′ clear to the doors</li><li>L-shaped desk under the L window with roller blinds</li><li>Cupboard with loft left of the door; L-shaped open book shelf right of the door</li></ul></article>
   </div>
 
   <p class="note">Room sizes are from the builder's floor plan. Window and door positions in the 3D model were matched to the plan by eye — please confirm all dimensions on site before production drawings.</p>

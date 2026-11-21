@@ -54,10 +54,19 @@ figcaption b{color:var(--ink)}
 .dlcard b{font-size:14px}.dlcard span{font-size:12.5px;color:var(--muted)}
 .dlcard::before{content:"↓";color:var(--accent);font-weight:700}
 .dlcard.main{border-color:var(--accent)}
+.topnav{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:10px max(16px,env(safe-area-inset-left,0px));
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topnav a{flex:none;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;font:600 13px var(--body)}
+.topnav a.home{background:var(--accent);border-color:var(--accent);color:#fff}
+h2[id]{scroll-margin-top:70px}
 footer{margin-top:40px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
+<nav class="topnav" aria-label="Sections">
+  <a href="./" class="home">← 3D model</a>
+  <a href="#plans">Floor plans</a><a href="#rooms">Requirements</a><a href="#downloads">Downloads</a>
+</nav>
 <div class="wrap">
   <header>
     <div>
@@ -72,7 +81,7 @@ footer{margin-top:40px;color:var(--muted);font-size:13px}
     </div>
   </header>
 
-  <h2>Floor plans</h2>
+  <h2 id="plans">Floor plans</h2>
   <div class="plans">
     <figure>
       <a href="images/plans/floor-plan-builder.jpg" target="_blank" rel="noopener"><img src="images/plans/floor-plan-builder.jpg" alt="Builder floor plan of the 3 BHK flat with room names and sizes"></a>
@@ -107,7 +116,7 @@ footer{margin-top:40px;color:var(--muted);font-size:13px}
     <div class="sw"><i style="background:#7c917a"></i>Sage (kitchen)</div>
   </div>
 
-  <h2>Room by room</h2>
+  <h2 id="rooms">Room by room</h2>
   <p class="legend"><b class="tag must">Our requirements</b> what we need · <b class="tag prop">In the 3D model</b> how it is shown today (open to your ideas)</p>
   <div class="rooms">
     <article class="room"><h3>Whole home</h3><span class="size">approx. 44′ × 39′</span>

@@ -108,6 +108,11 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
   background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:14px;
   display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.16)}
 .card h3{margin:0;font:400 20px/1.1 var(--display)}.card .dim{font:600 11.5px/1 var(--body);color:var(--accent)}.card p{margin:0;font-size:12.5px;line-height:1.45}
+.links{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.lk{display:flex;align-items:center;justify-content:center;gap:4px;padding:9px 6px;border-radius:8px;border:1px solid var(--accent);color:var(--accent);
+  font:600 12px/1.2 var(--body);text-decoration:none;text-align:center}
+.lk::after{content:"→"}
+.lk:hover{background:var(--accent);color:var(--accent-ink)}
 #loading{position:absolute;inset:0;display:grid;place-items:center;font:400 20px var(--display);color:var(--muted)}
 @media (max-width:720px){
   .panel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:46%;border-radius:16px 16px 0 0;
@@ -138,6 +143,7 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
       <button class="tg" id="tMeasure" type="button">Measure<b>Off</b></button>
       <button class="tg" id="tPlan" type="button">Floor plan<b>View</b></button>
     </div>
+    <div class="links"><a class="lk" id="lkReq" href="designer.html#rooms">Room requirements</a><a class="lk" id="lkBrief" href="designer.html">Designer brief</a></div>
     <button class="tg" id="tClear" type="button" hidden>Colours<b>Reset</b></button>
     <button id="tLabels" type="button" hidden>Labels<b></b></button><div id="wallSw" hidden></div>
   </aside>
@@ -1138,6 +1144,9 @@ function showPlans(){lbList=PLANS;lbShow(0);}
 document.getElementById('tPlan').addEventListener('click',showPlans);
 if(location.hash==='#plans')setTimeout(showPlans,400);
 addEventListener('hashchange',()=>{if(location.hash==='#plans')showPlans();});
+/* links to the designer brief (works on the website, Claude link and the local copy) */
+{const base=(location.protocol==='file:'&&!/GitHub(%20| )Site/.test(location.pathname))?'GitHub Site/':'';
+ document.getElementById('lkReq').href=base+'designer.html#rooms';document.getElementById('lkBrief').href=base+'designer.html';}
 renderNote();
 /* iPad / touch: double-tap the floor to stand there, pinch inside a room to walk */
 const touchPts=new Map();let pinchD=0,lastTap=0,lastTapXY=[0,0];

@@ -97,14 +97,24 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
 .lb p{margin:0;color:#f2efe9;font:600 14px var(--body)}
 .lb button{position:absolute;background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:999px;width:44px;height:44px;font:600 20px var(--body);cursor:pointer}
 .lbx{top:16px;right:16px}.lbp{left:16px;top:50%}.lbn{right:16px;top:50%}
+.panel{width:268px;gap:12px;padding:14px}
+.phead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.phead h1{margin:0;font-size:22px}
+.phide{float:none}
+.card{position:absolute;left:max(16px, env(safe-area-inset-left,0px));bottom:max(16px, env(safe-area-inset-bottom,0px));width:300px;max-height:min(60%,520px);overflow:auto;
+  background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:14px;
+  display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.16)}
+.card h3{margin:0;font:400 20px/1.1 var(--display)}.card .dim{font:600 11.5px/1 var(--body);color:var(--accent)}.card p{margin:0;font-size:12.5px;line-height:1.45}
 #loading{position:absolute;inset:0;display:grid;place-items:center;font:400 20px var(--display);color:var(--muted)}
 @media (max-width:720px){
   .panel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:46%;border-radius:16px 16px 0 0;
     padding:14px max(16px, env(safe-area-inset-right,0px)) max(14px, env(safe-area-inset-bottom,0px)) max(16px, env(safe-area-inset-left,0px));gap:12px}
   h1{font-size:23px}.sub{display:none}.hint{display:none}
-  .nav{bottom:calc(46% + 12px);right:12px}
+  .panel{max-height:34%;width:auto}
+  .card{left:10px;right:10px;width:auto;bottom:calc(34% + 10px);max-height:40%}
+  .nav{bottom:calc(34% + 12px);right:12px}
   #mini{width:140px;height:125px;top:10px;right:10px}
-  .zbar{bottom:calc(46% + 12px);right:12px}
+  .zbar{bottom:calc(34% + 12px);right:12px}
   .pshow{top:auto;bottom:max(14px, env(safe-area-inset-bottom,0px))}
   .views{grid-template-columns:repeat(4,1fr)}
 }
@@ -114,37 +124,20 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
   <div id="loading">Building the model…</div>
   <canvas id="gl"></canvas>
   <div id="labels"></div>
-  <aside class="panel" aria-label="Design controls">
-    <div>
-      <button type="button" class="phide" id="pHide" aria-label="Hide panel">Hide ›</button>
-      <p class="eyebrow">3 BHK · Warm modern Indian</p>
-      <h1>Your 3 BHK, Furnished</h1>
-      <p class="sub">Each room has its own colour story on a shared base of warm white walls, marble, teak and brass. Tap a room to step inside.</p>
+  <aside class="panel" aria-label="Rooms">
+    <div class="phead"><h1>Our 3 BHK</h1><button type="button" class="phide" id="pHide" aria-label="Hide panel">Hide</button></div>
+    <div class="views" id="views"></div>
+    <div class="toggles">
+      <button class="tg" id="tWalls" type="button">Walls<b>Cutaway</b></button>
+      <button class="tg" id="tLight" type="button">Light<b>Daytime</b></button>
+      <button class="tg" id="tIdeas" type="button">Ideas<b>—</b></button>
+      <button class="tg" id="tTour" type="button">Tour<b>Start</b></button>
+      <button class="tg" id="tMeasure" type="button">Measure<b>Off</b></button>
+      <button class="tg" id="tClear" type="button">Colours<b>Reset</b></button>
     </div>
-    <div class="sec">
-      <h2>Walk through</h2>
-      <div class="views" id="views"></div>
-    </div>
-    <div class="sec">
-      <h2>Display</h2>
-      <div class="toggles">
-        <button class="tg" id="tWalls" type="button">Walls<b>Cutaway</b></button>
-        <button class="tg" id="tLight" type="button">Light<b>Daytime</b></button>
-        <button class="tg" id="tLabels" type="button">Labels<b>Shown</b></button>
-      </div>
-    </div>
-    <div class="sec">
-      <h2>Tools</h2>
-      <div class="toggles">
-        <button class="tg" id="tTour" type="button">Tour<b>Start</b></button>
-        <button class="tg" id="tMeasure" type="button">Measure<b>Off</b></button>
-        <button class="tg" id="tClear" type="button">Colours<b>Reset all</b></button>
-      </div>
-      <div class="paint"><span>Wall paint</span><div id="wallSw" class="sw"></div></div>
-      <p class="tip">Tip: click any furniture to see its details and try other colours.</p>
-    </div>
-    <div class="note" id="note"></div>
+    <button id="tLabels" type="button" hidden>Labels<b></b></button><div id="wallSw" hidden></div>
   </aside>
+  <div class="card" id="note" hidden></div>
   <button type="button" id="pShow" class="pshow" hidden>☰ Panel</button>
   <div class="zbar" id="zbar" aria-label="Zoom controls">
     <button type="button" data-z="in" title="Zoom in">＋</button><button type="button" data-z="out" title="Zoom out">－</button>
@@ -175,6 +168,7 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
 <script>
 (function(){
+const IS_TOUCH=(navigator.maxTouchPoints||0)>0;
 const PI=Math.PI, H_FULL=10, H_CUT=3.6;
 let H=H_CUT;
 const OX=22, OZ=19.5;
@@ -847,7 +841,7 @@ plant(41,23.2,0.9);plant(42.6,24.5,1.1);plant(40.5,25.3,0.7);plant(40,13.6,0.6);
 /* ---------- lights ---------- */
 const hemi=new THREE.HemisphereLight(0xffffff,0xb7a98f,0.6);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff4e2,1.15);sun.position.set(-26,50,30);sun.target.position.set(0,0,0);scene.add(sun.target);
-sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);Object.assign(sun.shadow.camera,{left:-32,right:32,top:32,bottom:-32,near:1,far:140});
+sun.castShadow=true;sun.shadow.mapSize.set(IS_TOUCH?2048:4096,IS_TOUCH?2048:4096);Object.assign(sun.shadow.camera,{left:-32,right:32,top:32,bottom:-32,near:1,far:140});
 sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.03;scene.add(sun);
 const PL=[[25,9],[23,19.5],[7,20],[6.5,6],[38,6],[9,32],[38,30.5],[25.5,2.2],[41.7,19.5],[15,5],[35,22],[21.5,31]].map(([X,Z])=>{const l=new THREE.PointLight(0xffcf94,0,20,2);l.position.set(wx(X),8,wz(Z));scene.add(l);return l;});
 const puja=new THREE.PointLight(0xffa640,0.5,9,2);puja.position.set(wx(28.8),3.2,wz(36.3));scene.add(puja);
@@ -934,7 +928,7 @@ function setMode(ins){inside=ins;
     ?{enableZoom:false,enablePan:false,rotateSpeed:-0.35,minDistance:0.4,maxDistance:0.6,minPolarAngle:0.35,maxPolarAngle:PI-0.35}
     :{enableZoom:true,enablePan:true,rotateSpeed:0.9,minDistance:3,maxDistance:110,minPolarAngle:0,maxPolarAngle:PI/2-0.04});
   navEl.hidden=!ins;document.getElementById('zbar').hidden=ins;
-  hintEl.textContent=ins?'Drag to look · ↑ ↓ walk · ← → move sideways · Q E turn · click furniture for details · click the mini-map to jump'
+  hintEl.textContent=IS_TOUCH?(ins?'Drag to look around · pinch to walk · double-tap the floor to move · tap furniture for details':'Drag to rotate · pinch to zoom · two-finger drag to pan · double-tap to stand inside'):ins?'Drag to look · ↑ ↓ walk · ← → move sideways · Q E turn · click furniture for details · click the mini-map to jump'
                         :'Drag to rotate · scroll/pinch to zoom · right-drag to pan · double-click or use the mini-map to stand inside';
   if(!ins){camera.fov=baseFov;camera.updateProjectionMatrix();}}
 function flyTo(pos,tgt,ins){Object.assign(controls,{minDistance:0,maxDistance:500,minPolarAngle:0,maxPolarAngle:PI});if(!ins)setWalls(false);
@@ -1129,7 +1123,20 @@ const baseRenderNote=renderNote;renderNote=function(){baseRenderNote();const lis
   const box=document.createElement('div');box.className='gal';
   box.innerHTML=`<h4>Design ideas · ${list.length}</h4><div class="thumbs">${list.map((g,i)=>`<button type="button" data-i="${i}" title="${g.t}"><img loading="lazy" src="${IMG_BASE}thumbs/${g.f}" alt="${g.t}"></button>`).join('')}</div>`;
   box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{lbList=list;lbShow(+b.dataset.i);}));noteEl.appendChild(box);};
+const tIdeas=document.getElementById('tIdeas');
+renderNote=function(){const n=(GALLERY[current]||[]).length;tIdeas.querySelector('b').textContent=n?n+' images':'All';if(!sel)noteEl.hidden=true;};
+tIdeas.addEventListener('click',()=>{const own=GALLERY[current]||[];lbList=own.length?own:Object.values(GALLERY).flat();lbShow(0);});
+const selectWithCard=select;select=function(it){selectWithCard(it);noteEl.hidden=!it;};
 renderNote();
+/* iPad / touch: double-tap the floor to stand there, pinch inside a room to walk */
+const touchPts=new Map();let pinchD=0,lastTap=0,lastTapXY=[0,0];
+canvas.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')return;touchPts.set(e.pointerId,[e.clientX,e.clientY]);
+  if(touchPts.size===2){const [a,b]=[...touchPts.values()];pinchD=Math.hypot(a[0]-b[0],a[1]-b[1]);}});
+canvas.addEventListener('pointermove',e=>{if(!touchPts.has(e.pointerId))return;touchPts.set(e.pointerId,[e.clientX,e.clientY]);
+  if(inside&&!fly&&touchPts.size===2){const [a,b]=[...touchPts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);imp.f=Math.max(-5,Math.min(5,imp.f+(d-pinchD)*0.035));pinchD=d;}});
+for(const t of['pointerup','pointercancel'])canvas.addEventListener(t,e=>{if(e.pointerType!=='touch')return;const wasOne=touchPts.size===1;touchPts.delete(e.pointerId);
+  if(t==='pointerup'&&wasOne){const now=performance.now();if(now-lastTap<330&&Math.hypot(e.clientX-lastTapXY[0],e.clientY-lastTapXY[1])<30){lastTap=0;
+    canvas.dispatchEvent(new MouseEvent('dblclick',{clientX:e.clientX,clientY:e.clientY,bubbles:true}));}else{lastTap=now;lastTapXY=[e.clientX,e.clientY];}}});
 
 function loop(now){
   if(fly){const k=Math.min(1,(now-fly.s)/fly.d);const e=ease(k);camera.position.lerpVectors(fly.p0,fly.p1,e);camera.position.y+=Math.sin(PI*e)*fly.arc;

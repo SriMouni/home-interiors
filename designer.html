@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Home Interior Brief</title>
+<meta name="description" content="Floor plans, room sizes and interior requirements for our 3 BHK flat, for interior designers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: single readable column; plans full width; room cards in a responsive grid */
+:root{--bg:#f6f3ee;--card:#fffdf9;--ink:#1f2a2e;--muted:#5b6869;--line:rgba(31,42,46,.12);--accent:#1f5446;--warm:#b98b5e;
+  --display:"Marcellus",Georgia,serif;--body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#121719;--card:#1a2124;--ink:#e6ebe9;--muted:#9aa7a7;--line:rgba(230,235,233,.13);--accent:#7fc0a8;--warm:#d2a679}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding:32px max(16px,env(safe-area-inset-left,0px)) 64px max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:20px}
+.eyebrow{margin:0;font:600 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+h1{margin:8px 0 0;font:400 clamp(30px,5vw,44px)/1.05 var(--display);text-wrap:balance}
+.lead{margin:10px 0 0;max-width:62ch;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);
+  text-decoration:none;font:600 13.5px var(--body)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+h2{margin:44px 0 14px;font:400 26px/1.1 var(--display)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+figure a{display:block}
+figure img{display:block;width:100%;height:auto}
+figcaption{display:flex;justify-content:space-between;gap:8px;padding:10px 14px;font-size:13px;color:var(--muted)}
+figcaption b{color:var(--ink)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.fact span{display:block;font:600 10.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fact b{display:block;margin-top:6px;font-size:15px}
+.rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.room{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.room h3{margin:0;font:400 21px/1.15 var(--display)}
+.size{display:inline-block;margin-top:6px;font:700 12.5px var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
+.room ul{margin:10px 0 0;padding-left:18px}
+.room li{margin:3px 0}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.sw{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;font-size:13px}
+.sw i{width:22px;height:22px;border-radius:50%;border:1px solid var(--line)}
+.note{margin-top:28px;padding:14px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 10px 10px 0;color:var(--muted);font-size:14px}
+footer{margin-top:40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow">Interior design brief · 3 BHK flat</p>
+      <h1>Home Interior Brief</h1>
+      <p class="lead">Floor plans, room sizes and what we want in each room. Please use this with the interactive 3D model, which shows the planned layout and furniture positions.</p>
+    </div>
+    <div class="btns">
+      <a class="btn primary" href="./">Open 3D model</a>
+      <a class="btn" href="./#plans">Plans in 3D view</a>
+    </div>
+  </header>
+
+  <h2>Floor plans</h2>
+  <div class="plans">
+    <figure>
+      <a href="images/plans/floor-plan-builder.jpg" target="_blank" rel="noopener"><img src="images/plans/floor-plan-builder.jpg" alt="Builder floor plan of the 3 BHK flat with room names and sizes"></a>
+      <figcaption><b>Builder floor plan</b><span>Tap to open full size</span></figcaption>
+    </figure>
+    <figure>
+      <a href="images/plans/floor-plan-furnished.jpg" target="_blank" rel="noopener"><img src="images/plans/floor-plan-furnished.jpg" alt="Furnished floor plan render of the 3 BHK flat"></a>
+      <figcaption><b>Furnished floor plan</b><span>Tap to open full size</span></figcaption>
+    </figure>
+  </div>
+
+  <h2>At a glance</h2>
+  <div class="facts">
+    <div class="fact"><span>Layout</span><b>3 BHK · 4 toilets</b></div>
+    <div class="fact"><span>Overall</span><b>approx. 44′ × 39′</b></div>
+    <div class="fact"><span>Main door</span><b>West, into the drawing room</b></div>
+    <div class="fact"><span>Outdoor</span><b>Sit-out 4′0″ · Balcony 4′6″</b></div>
+    <div class="fact"><span>Ceilings</span><b>False ceiling with cove light</b></div>
+  </div>
+
+  <h2>Style &amp; colours</h2>
+  <p>Warm modern Indian: calm, light and natural, with brass details and a few traditional touches (jhula, toran, puja jaali).</p>
+  <div class="swatches">
+    <div class="sw"><i style="background:#f2ebdf"></i>Warm cream walls</div>
+    <div class="sw"><i style="background:#ece3d4"></i>Beige marble floor</div>
+    <div class="sw"><i style="background:#b98b5e"></i>Light oak</div>
+    <div class="sw"><i style="background:#7a4a2a"></i>Teak (jhula, mandir)</div>
+    <div class="sw"><i style="background:#ebe2d1"></i>Cream bouclé</div>
+    <div class="sw"><i style="background:#6f7a45"></i>Olive</div>
+    <div class="sw"><i style="background:#c0704c"></i>Terracotta</div>
+    <div class="sw"><i style="background:#c49a4a"></i>Brass</div>
+    <div class="sw"><i style="background:#7c917a"></i>Sage (kitchen)</div>
+  </div>
+
+  <h2>Room by room</h2>
+  <div class="rooms">
+    <article class="room"><h3>Drawing room</h3><span class="size">13′7″ × 12′0″</span><ul>
+      <li>L-shaped sofa in the south-west corner, under the window</li>
+      <li>Carved teak jhula on brass chains near the master-bedroom door, no partition</li>
+      <li>TV wall on the north wall: limewash panel, oak frame, floating shelves, fluted console</li>
+      <li>Shoe rack and mirror <b>outside</b> the main door</li>
+      <li>Large jute rug, ceiling fan, cove-lit false ceiling</li></ul></article>
+    <article class="room"><h3>Living</h3><span class="size">12′0″ × 8′8″</span><ul>
+      <li>One 7′ three-seater sofa only, <b>no TV</b></li>
+      <li>Entrance wall designed end to end (living through dining, up to the C.TOI door): fluted oak, backlit onyx band, brass inlays, floating ledge</li>
+      <li>Bedroom 2 door hidden flush in the panelling</li>
+      <li>Ceiling projector with a recessed roll-down screen</li></ul></article>
+    <article class="room"><h3>Dining</h3><span class="size">16′2″ × 12′0″</span><ul>
+      <li>6-seater oval table, ring chandelier</li>
+      <li>Full-height crockery unit on the dining wall: fluted base, quartz top, backlit glass display, loft</li></ul></article>
+    <article class="room"><h3>Kitchen</h3><span class="size">13′11″ × 8′0″</span><ul>
+      <li>U-shaped modular kitchen, sage base cabinets, quartz top</li>
+      <li>Tall pull-out pantry beside the fridge</li>
+      <li>Appliance garage with a roll-up shutter (mixer, toaster, kettle)</li>
+      <li>Sink at the end near the utility door, dishwasher next to it, then wicker baskets</li>
+      <li>Hob + chimney on the east wall; keep the window to the utility open</li>
+      <li>Wall cabinets and lofts on both sides</li></ul></article>
+    <article class="room"><h3>Puja room</h3><span class="size">4′8″ × 5′6″</span><ul>
+      <li>Mandir on the east wall so the deity faces west, toward the main-entrance side</li>
+      <li>Window wall highlighted with a backlit white CNC jaali around the small high window</li>
+      <li>Jaali doors, toran, bell, kolam rug</li></ul></article>
+    <article class="room"><h3>Master bedroom</h3><span class="size">17′2″ × 12′0″</span><ul>
+      <li>King bed (6′ × 7′) on the south wall with a padded headboard wall</li>
+      <li>Full-length wardrobe with loft along the entire west wall</li>
+      <li>Dressing unit on the TV wall, right beside the wardrobe</li>
+      <li>Work station beside the washroom (M.TOI) door</li>
+      <li>TV console on the north wall</li></ul></article>
+    <article class="room"><h3>Bedroom 1</h3><span class="size">11′5″ × 12′0″</span><ul>
+      <li>Bed 6′ × 5′, one bedside table on the door side only</li>
+      <li>West wall as one continuous unit: wardrobe → window seat (window in the middle) → dressing unit, loft over all</li>
+      <li>No study table; TOI-01 door in the north-east corner</li></ul></article>
+    <article class="room"><h3>Bedroom 2</h3><span class="size">12′0″ × 12′0″</span><ul>
+      <li>Bed 6′ × 4′, no bedside tables, about 2½′ clear from the toilet and balcony doors</li>
+      <li>L-shaped work station under the L-shaped corner window</li>
+      <li>Beside the entry door: cupboard on the left, L-shaped book shelf on the right turning into the corner</li></ul></article>
+  </div>
+
+  <p class="note">Room sizes are from the builder's floor plan. Window and door positions in the 3D model were matched to the plan by eye — please confirm all dimensions on site before production drawings.</p>
+  <footer>3D model, design ideas for each room and these plans: <a href="./">srimouni.github.io/home-interiors</a></footer>
+</div>
+</body>
+</html>

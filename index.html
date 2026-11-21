@@ -133,8 +133,9 @@ h1{margin:6px 0 0;font:400 28px/1.05 var(--display);text-wrap:balance}
       <button class="tg" id="tIdeas" type="button">Ideas<b>—</b></button>
       <button class="tg" id="tTour" type="button">Tour<b>Start</b></button>
       <button class="tg" id="tMeasure" type="button">Measure<b>Off</b></button>
-      <button class="tg" id="tClear" type="button">Colours<b>Reset</b></button>
+      <button class="tg" id="tPlan" type="button">Floor plan<b>View</b></button>
     </div>
+    <button class="tg" id="tClear" type="button" hidden>Colours<b>Reset</b></button>
     <button id="tLabels" type="button" hidden>Labels<b></b></button><div id="wallSw" hidden></div>
   </aside>
   <div class="card" id="note" hidden></div>
@@ -1127,6 +1128,12 @@ const tIdeas=document.getElementById('tIdeas');
 renderNote=function(){const n=(GALLERY[current]||[]).length;tIdeas.querySelector('b').textContent=n?n+' images':'All';if(!sel)noteEl.hidden=true;};
 tIdeas.addEventListener('click',()=>{const own=GALLERY[current]||[];lbList=own.length?own:Object.values(GALLERY).flat();lbShow(0);});
 const selectWithCard=select;select=function(it){selectWithCard(it);noteEl.hidden=!it;};
+/* floor plans (shareable link: add #plans to the address) */
+const PLANS=[{t:'Builder floor plan',f:'plans/floor-plan-builder.jpg'},{t:'Furnished floor plan',f:'plans/floor-plan-furnished.jpg'}];
+function showPlans(){lbList=PLANS;lbShow(0);}
+document.getElementById('tPlan').addEventListener('click',showPlans);
+if(location.hash==='#plans')setTimeout(showPlans,400);
+addEventListener('hashchange',()=>{if(location.hash==='#plans')showPlans();});
 renderNote();
 /* iPad / touch: double-tap the floor to stand there, pinch inside a room to walk */
 const touchPts=new Map();let pinchD=0,lastTap=0,lastTapXY=[0,0];

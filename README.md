@@ -4,6 +4,10 @@ Live site: https://srimouni.github.io/home-interiors/
 
 A furnished, walk-through 3D model of a 3 BHK flat (about 44 ft × 39 ft), built with three.js. Warm modern Indian interiors: cream, light oak, beige marble, brass, olive and terracotta.
 
+## For interior designers
+- **Brief with floor plans and room requirements:** https://srimouni.github.io/home-interiors/designer.html
+- **Floor plans inside the 3D model:** https://srimouni.github.io/home-interiors/#plans
+
 ## How to use
 - **Overview:** drag to rotate, scroll or pinch to zoom, right-drag to pan.
 - **Go inside:** tap a room button, double-click the floor, or click the mini-map (top right).

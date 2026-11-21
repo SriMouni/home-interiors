@@ -48,6 +48,12 @@ figcaption b{color:var(--ink)}
 .sw{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;font-size:13px}
 .sw i{width:22px;height:22px;border-radius:50%;border:1px solid var(--line)}
 .note{margin-top:28px;padding:14px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 10px 10px 0;color:var(--muted);font-size:14px}
+.dl{color:var(--accent);font-weight:700;text-decoration:none}
+.dls{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.dlcard{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none}
+.dlcard b{font-size:14px}.dlcard span{font-size:12.5px;color:var(--muted)}
+.dlcard::before{content:"↓";color:var(--accent);font-weight:700}
+.dlcard.main{border-color:var(--accent)}
 footer{margin-top:40px;color:var(--muted);font-size:13px}
 </style>
 </head>
@@ -62,6 +68,7 @@ footer{margin-top:40px;color:var(--muted);font-size:13px}
     <div class="btns">
       <a class="btn primary" href="./">Open 3D model</a>
       <a class="btn" href="./#plans">Plans in 3D view</a>
+      <a class="btn" href="#downloads">Downloads</a>
     </div>
   </header>
 
@@ -69,11 +76,11 @@ footer{margin-top:40px;color:var(--muted);font-size:13px}
   <div class="plans">
     <figure>
       <a href="images/plans/floor-plan-builder.jpg" target="_blank" rel="noopener"><img src="images/plans/floor-plan-builder.jpg" alt="Builder floor plan of the 3 BHK flat with room names and sizes"></a>
-      <figcaption><b>Builder floor plan</b><span>Tap to open full size</span></figcaption>
+      <figcaption><b>Builder floor plan</b><a class="dl" href="images/plans/floor-plan-builder.jpg" download>Download</a></figcaption>
     </figure>
     <figure>
       <a href="images/plans/floor-plan-furnished.jpg" target="_blank" rel="noopener"><img src="images/plans/floor-plan-furnished.jpg" alt="Furnished floor plan render of the 3 BHK flat"></a>
-      <figcaption><b>Furnished floor plan</b><span>Tap to open full size</span></figcaption>
+      <figcaption><b>Furnished floor plan</b><a class="dl" href="images/plans/floor-plan-furnished.jpg" download>Download</a></figcaption>
     </figure>
   </div>
 
@@ -130,6 +137,22 @@ footer{margin-top:40px;color:var(--muted);font-size:13px}
     <article class="room"><h3>Bedroom 2</h3><span class="size">12′0″ × 12′0″</span>
       <h4 class="tag must">Our requirements</h4><ul class="req"><li>Bed size 6′ × 4′, no bedside tables</li><li>Work station at the L-shaped corner window</li><li>Cupboard on the left of the door, book shelf on the right</li><li>Book shelf L-shaped, turning into the corner</li><li>Bed towards the toilet/balcony doors, but with enough space to use them</li></ul>
       <h4 class="tag prop">In the 3D model</h4><ul><li>Bed on the east wall with about 2½′ clear to the doors</li><li>L-shaped desk under the L window with roller blinds</li><li>Cupboard with loft left of the door; L-shaped open book shelf right of the door</li></ul></article>
+  </div>
+
+  <h2 id="downloads">Downloads</h2>
+  <div class="dls">
+    <a class="dlcard main" href="downloads/floor-plans.zip" download><b>Floor plans</b><span>2 images · 0.7 MB</span></a>
+    <a class="dlcard main" href="downloads/design-ideas-all-rooms.zip" download><b>All design ideas</b><span>93 images · 26 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-drawing.zip" download><b>Drawing room</b><span>11 images · 2.5 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-living.zip" download><b>Living</b><span>16 images · 4.6 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-dining.zip" download><b>Dining</b><span>13 images · 3.1 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-kitchen.zip" download><b>Kitchen</b><span>13 images · 2.7 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-puja.zip" download><b>Puja room</b><span>18 images · 5.1 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-master.zip" download><b>Master bedroom</b><span>6 images · 3.2 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-bed1.zip" download><b>Bedroom 1</b><span>3 images · 1.0 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-bed2.zip" download><b>Bedroom 2</b><span>8 images · 2.9 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-utility.zip" download><b>Utility</b><span>2 images · 0.4 MB</span></a>
+    <a class="dlcard" href="downloads/design-ideas-overview.zip" download><b>Whole-home concepts</b><span>3 images · 0.8 MB</span></a>
   </div>
 
   <p class="note">Room sizes are from the builder's floor plan. Window and door positions in the 3D model were matched to the plan by eye — please confirm all dimensions on site before production drawings.</p>
